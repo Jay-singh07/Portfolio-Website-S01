@@ -1,12 +1,22 @@
 // =================== SHOW SIDEBAR ===================
-
+const navMenu = document.getElementById('sidebar'),
+      navToggle = document.getElementById('nav-toggle'),
+      navClose = document.getElementById('nav-close')
 // ===== SIDEBAR SHOW =====
 // Validate If Constant Exists 
-
+if(navToggle) {
+    navToggle.addEventListener("click", () => {
+        navMenu.classList.add('show-slidebar')
+    })
+}
 
 // ====== SIDEBAR HIDDEN ======
 // Validate If Constant Exists 
-
+if(navClose) {
+    navClose.addEventListener("click", () => {
+        navMenu.classList.remove('show-slidebar')
+    })
+}
 
 // =================== SKILLS TABS ===================
 const tabs = document.querySelectorAll('[data-target]'),
@@ -115,9 +125,54 @@ let swiper = new Swiper(".testimonials__container", {
   });
 
 // =============== INPUT ANIMATION ===============
+const inputs = document.querySelectorAll(".input");
 
+function focusFunc() {
+    let parent = this.parentNode;
+    parent.classList.add("focus");
+}
+
+function blurFunc() {
+    let parent = this.parentNode;
+    if(this.value == "") {
+        parent.classList.remove("focus");
+    }
+}
+
+inputs.forEach((input) => {
+    input.addEventListener("focus", focusFunc);
+    input.addEventListener("blur", blurFunc);
+})
 
 // =========== SCROLL SECTIONS ACTIVE LINK ===========
+// get all sections that have an id defined
+const sections = document.querySelectorAll("section[id]");
 
+//add an event listener listening for all scroll
+window.addEventListener("scroll", navHighlighter);
+
+function navHighlighter()
+{
+    //get currunt scroll position
+    let scrollY = window.pageYOffset;
+    // Now we loop though sections to get height, top and ID values for each
+    sections.forEach(current => {
+        const sectionHeight = current.offsetHeight;
+        const sectionTop = current.offsetTop - 50,
+        sectionId = current.getAttribute("id");
+        /* - if our current scroll positio enters the space where currnt section on screen is, add .active class to
+        corresponding navigation link, else remove it
+        - To know which links need  on active class, we use sectionId variable we are getting while looping through
+        sections as an selectors*/
+        if(scrollY > sectionTop && scrollY <= sectionTop + sectionHeight)
+        {
+            document.querySelector('.nav__menu a[href*=' + sectionId + ']').classList.add("active-link")
+        }
+        else
+        {
+            document.querySelector('.nav__menu a[href*=' + sectionId + ']').classList.remove("active-link")
+        }
+    })
+}
 
 // =============== SHOW SCROLL UP  ===============
